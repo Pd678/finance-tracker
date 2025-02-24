@@ -1,48 +1,75 @@
-import React from "react";
-import { PieChart, Pie, Cell, Tooltip } from "recharts";
-import "./db.css";
+// import MyChart from "./MyChart";
+// import "./Dashboard.css"; // Import styles
 
+// const Dashboard = () => {
+//   return (
+//     <div className="dashboard-container">
+//       <h1 className="dashboard-title">📊 Finance Dashboard</h1>
+//       <p className="dashboard-subtext">Track your expenses easily!</p>
+//       <div className="dashboard-content">
+//         <MyChart />
+//       </div>
+//     </div>
+//   );
+// };
 
-const data = [
-  { name: "Savings", value: 400 },
-  { name: "Expenses", value: 300 },
-  { name: "Investments", value: 200 },
-];
-
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28"];
+// export default Dashboard;
+import MyChart from "./MyChart";
+import "./Dashboard.css"; // Import styles
 
 const Dashboard = () => {
+  // Mock data for demonstration (Replace with actual API data)
+  const totalExpenses = 450; // Example total expense
+  const budget = 1000; // Example monthly budget
+  const expenses = [
+    { category: "Food", amount: 120, color: "#FF6384" },
+    { category: "Transport", amount: 80, color: "#36A2EB" },
+    { category: "Entertainment", amount: 100, color: "#FFCE56" },
+    { category: "Rent", amount: 150, color: "#4BC0C0" },
+  ];
+
   return (
-    <div style={{ textAlign: "center" }}>
-      <h1>Dashboard</h1>
+    <div className="dashboard-container">
+      <h1 className="dashboard-title">📊 Expense Tracker Dashboard</h1>
+      <p className="dashboard-subtext">Manage and analyze your spending efficiently!</p>
 
-      {/* Table */}
-      <table border="1" style={{ margin: "auto", width: "50%" }}>
-        <thead>
-          <tr>
-            <th>Category</th>
-            <th>Amount ($)</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((entry, index) => (
-            <tr key={index}>
-              <td>{entry.name}</td>
-              <td>{entry.value}</td>
+      {/* Total Expense Section */}
+      <div className="expense-summary">
+        <h2>Total Expenses: <span className="expense-amount">${totalExpenses}</span></h2>
+        <div className="progress-bar-container">
+          <div
+            className="progress-bar"
+            style={{ width: `${(totalExpenses / budget) * 100}%`, backgroundColor: totalExpenses > budget ? "red" : "green" }}
+          ></div>
+        </div>
+        <p>Budget: ${budget} | Remaining: ${budget - totalExpenses}</p>
+      </div>
+
+      {/* Expense Breakdown Table */}
+      <div className="expense-table">
+        <h3>Expense Breakdown</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Amount</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {expenses.map((expense, index) => (
+              <tr key={index} style={{ color: expense.color }}>
+                <td>{expense.category}</td>
+                <td>${expense.amount}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
-      {/* Pie Chart */}
-      <PieChart width={300} height={300}>
-        <Pie data={data} cx="50%" cy="50%" outerRadius={100} fill="#8884d8" dataKey="value">
-          {data.map((_, index) => (
-            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-          ))}
-        </Pie>
-        <Tooltip />
-      </PieChart>
+      {/* Expense Chart */}
+      <div className="dashboard-content">
+        <MyChart />
+      </div>
     </div>
   );
 };
